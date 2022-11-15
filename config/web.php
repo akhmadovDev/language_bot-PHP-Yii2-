@@ -1,5 +1,7 @@
 <?php
 
+use app\components\Config;
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
@@ -42,14 +44,14 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-            ],
+            'rules' => [],
         ],
-        */
+        'config' => [
+            'class' => Config::class
+        ]
     ],
     'params' => $params,
 ];

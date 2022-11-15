@@ -19,6 +19,16 @@ class m221113_082610_create_category_table extends Migration
             'created_date' => $this->timestamp(),
             'updated_date' => $this->timestamp(),
         ]);
+
+        $this->createTable('sub_category', [
+            'id' => $this->primaryKey(),
+            'category_id' => $this->integer(),
+            'name' => $this->string(),
+            'created_date' => $this->timestamp(),
+            'updated_date' => $this->timestamp(),
+        ]);
+
+        $this->addForeignKey('sub_category-fk-category', 'sub_category', 'category_id', 'category', 'id');
     }
 
     /**

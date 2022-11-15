@@ -15,9 +15,11 @@ class m221113_082558_create_users_table extends Migration
         $this->createTable('{{%users}}', [
             'id' => $this->primaryKey(),
             'chat_id' => $this->bigInteger(),
+            'words_id' => $this->integer(),
             'full_name' => $this->string(),
             'username' => $this->string(),
             'role' => $this->smallInteger(),
+            'page' => $this->smallInteger(),
             'status' => $this->smallInteger(),
             'created_date' => $this->timestamp(),
         ]);

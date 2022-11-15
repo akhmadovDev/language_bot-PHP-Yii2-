@@ -14,7 +14,7 @@ class m221113_082622_create_words_table extends Migration
     {
         $this->createTable('{{%words}}', [
             'id' => $this->primaryKey(),
-            'category_id' => $this->integer(),
+            'sub_category_id' => $this->integer(),
             'title_uz' => $this->string(),
             'title_ru' => $this->string(),
             'title_eng' => $this->string(),
@@ -23,7 +23,8 @@ class m221113_082622_create_words_table extends Migration
             'updated_date' => $this->timestamp(),
         ]);
 
-        $this->addForeignKey('words-fk-category', 'words', 'category_id', 'category', 'id');
+        $this->addForeignKey('words-fk-sub_category', 'words', 'sub_category_id', 'sub_category', 'id');
+        $this->addForeignKey('users-fk-words', 'users', 'words_id', 'words', 'id');
     }
 
     /**
