@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\Keyboard;
 use app\models\Category;
 use app\models\CategorySearch;
 use yii\web\Controller;
@@ -33,6 +34,17 @@ class CategoryController extends Controller
         );
     }
 
+    /**************************************** Start Telegram*********************
+     * Category keyboards
+     * @return Keyboard
+     */
+    public function categoryKeyboards(): Keyboard
+    {
+        $categories = Category::getCategtory();
+        return Keyboard::keyboard($categories);
+    }
+
+    /***************************************** End Telegram *********************/
 
 
     /**

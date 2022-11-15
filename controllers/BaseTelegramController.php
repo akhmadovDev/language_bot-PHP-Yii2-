@@ -15,7 +15,12 @@ class BaseTelegramController extends Controller
     public Telegram $telegram;
     public array|bool $user;
 
-    public function __construct($id, $module, $config = [])
+    /**
+     * @param $id
+     * @param $module
+     * @param array $config
+     */
+    public function __construct($id, $module, array $config = [])
     {
         $this->id = $id;
         $this->module = $module;
@@ -24,29 +29,31 @@ class BaseTelegramController extends Controller
         $this->telegram = new Telegram();
         $this->user = Users::getUser($this->telegram->chat_id);
 
-        $this->confirmUser($this->user) === false ? exit('Sizning sahifangiz nofaol') : '';
+        if ($this->confirmUser() === false) {
+            exit('Sizning sahifangiz nofaol');
+        }
     }
 
-    public function categoryKeyboards()
-    {
-        $categories = Category::getCategtory();
-        return Keyboard::keyboard($categories);
-    }
 
     /**
-     * User statusini tekshiradi 
-     * va user ma'lumotlari bazada bor yo'qligini 
+     * User statusini tekshiradi
+     * va user ma'lumotlari bazada bor yo'qligini
      * tekshradi
      * agar bazada bo'lsa true
      * aks holda false
      *
-     * @param array $user
      * @return boolean
      */
     public function confirmUser(): bool
     {
         if ($this->user === false) {
             $this->user = $this->addNewUser();
+
+            if ($this->user === false) {
+                $this->telegram->send('Baza bilan bog\'liq xatolik iltimos @mr_Akhmadov ga murojaat qiling.');
+                return false;
+            }
+
             return true;
         }
 
@@ -61,9 +68,9 @@ class BaseTelegramController extends Controller
     /**
      * Create new user
      *
-     * @return void
+     * @return array|bool
      */
-    public function addNewUser()
+    public function addNewUser(): bool|array
     {
         $model = new Users();
         $model->chat_id = $this->telegram->chat_id;
@@ -74,5 +81,6 @@ class BaseTelegramController extends Controller
         if ($model->save()) {
             return Users::getUser($this->telegram->chat_id);
         }
+        return false;
     }
 }
