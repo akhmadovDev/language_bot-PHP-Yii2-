@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\Config;
 use Yii;
 
 /**
@@ -109,5 +110,23 @@ class Words extends \yii\db\ActiveRecord
     public static function find()
     {
         return new WordsQuery(get_called_class());
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param integer $sub_category_id
+     * @return array
+     */
+    public static function get(int $sub_category_id): array
+    {
+        $sql = <<<SQL
+            SELECT * FROM words WHERE status = :status AND sub_category_id = :sub_category_id
+        SQL;
+
+        return Yii::$app->db->createCommand($sql, [
+            ':status' => Config::STATUS_ACTIVE,
+            ':sub_category_id' => $sub_category_id
+        ])->queryAll();
     }
 }

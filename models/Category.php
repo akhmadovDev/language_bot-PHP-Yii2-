@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\components\Keyboard;
 
 /**
  * This is the model class for table "category".
@@ -69,9 +70,9 @@ class Category extends \yii\db\ActiveRecord
      * Get category
      *
      * @param integer
-     * @return array
+     * @return array|Keyboard
      */
-    public static function getCategtory(): array
+    public static function getAll(): array
     {
         $sql = <<<SQL
             SELECT * FROM category WHERE status = :status
@@ -79,7 +80,29 @@ class Category extends \yii\db\ActiveRecord
 
         return Yii::$app
             ->db
-            ->createCommand($sql, [':status' => Yii::$app->config::STATUS_ACTIVE])
+                ->createCommand($sql, [':status' => Yii::$app->config::STATUS_ACTIVE])
             ->queryAll();
+    }
+
+    /**
+     * Kategoriya id sini qaytaradi
+     * agar kategoriya id si bo'lmada false qasytaradi
+     *
+     * @param string $category_name
+     * @return int|bool
+     */
+    public static function getId(string $category_name): int|bool
+    {
+        $sql = <<<SQL
+            SELECT `id` FROM category WHERE name = :name
+        SQL;
+
+        $result = Yii::$app->db->createCommand($sql, [':name' => $category_name])->queryOne();
+
+        if ($result === false) {
+            return false;
+        }
+
+        return $result['id'];
     }
 }

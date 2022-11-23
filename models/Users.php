@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\Config;
 use Yii;
 
 /**
@@ -84,7 +85,7 @@ class Users extends \yii\db\ActiveRecord
      * @param integer $chat_id
      * @return array|bool
      */
-    public static function getUser(int $chat_id): array|bool
+    public static function getUser(int $chat_id): array |bool
     {
         $sql = <<<SQL
             SELECT * FROM users WHERE chat_id = :chat_id
@@ -92,7 +93,15 @@ class Users extends \yii\db\ActiveRecord
 
         return Yii::$app
             ->db
-            ->createCommand($sql, [':chat_id' => $chat_id])
+                ->createCommand($sql, [':chat_id' => $chat_id])
             ->queryOne();
+    }
+
+    public static function updatePage(int $page_id, int $user_id): int
+    {
+        return Yii::$app->db->createCommand('UPDATE users SET page = :page WHERE id = :user_id', [
+            ':page' => $page_id,
+            ':user_id' => $user_id
+        ])->execute();
     }
 }

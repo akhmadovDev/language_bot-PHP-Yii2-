@@ -24,6 +24,7 @@ class m221113_082610_create_category_table extends Migration
             'id' => $this->primaryKey(),
             'category_id' => $this->integer(),
             'name' => $this->string(),
+            'status' => $this->smallInteger(),
             'created_date' => $this->timestamp(),
             'updated_date' => $this->timestamp(),
         ]);

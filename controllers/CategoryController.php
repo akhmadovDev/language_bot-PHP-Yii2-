@@ -38,9 +38,9 @@ class CategoryController extends Controller
      * Category keyboards
      * @return Keyboard
      */
-    public function categoryKeyboards(): Keyboard
+    public function categoryKeyboards()
     {
-        $categories = Category::getCategtory();
+        $categories = Category::getAll();
         return Keyboard::keyboard($categories);
     }
 

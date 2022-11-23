@@ -5,7 +5,10 @@ namespace app\components;
 use Telegram\Bot\Api;
 use Yii;
 use Telegram\Bot\Objects\Update as UpdateObject;
+use Telegram\Bot\Objects\Message;
 use app\components\Config;
+use app\models\Users;
+use Exception;
 
 class Telegram extends Api
 {
@@ -33,10 +36,10 @@ class Telegram extends Api
      * Send Message
      *
      * @param string $text
-     * @param array|null $keyboard
-     * @return void
+     * @param Keyboard $keyboard
+     * @return Message
      */
-    public function send(string $text, $keyboard = null)
+    public function send(string $text, ? Keyboard $keyboard = null): Message
     {
         return $this->sendMessage([
             'chat_id' => $this->chat_id,
@@ -62,5 +65,23 @@ class Telegram extends Api
 
         $this->send('kirish xuquqi mavjud emas');
         return false;
+    }
+
+    ///////////------------------////////////////////
+    /**
+     * Update page
+     *
+     * @return bool
+     */
+    protected function updatePage(int $page): bool
+    {
+        $user_id = Yii::$app->params['user']['id'];
+        $update_page = Users::updatePage($page, $user_id);
+
+        if ($update_page < 1) {
+            throw new Exception('Qandaydir xatolik sodir bo`ldi. User sahifasi o`zgartirilmadi. Iltimos @mr_Akhmadov ga murojaat qiling');
+        }
+
+        return true;
     }
 }

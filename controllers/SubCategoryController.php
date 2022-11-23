@@ -2,11 +2,13 @@
 
 namespace app\controllers;
 
+use app\components\Config;
 use app\models\SubCategory;
 use app\models\SubCategorySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * SubCategoryController implements the CRUD actions for SubCategory model.

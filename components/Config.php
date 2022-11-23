@@ -27,6 +27,7 @@ class Config extends Component
     public const PAGE_CATEGORY = 5;
     public const PAGE_SUB_CATEGORY = 6;
     public const PAGE_TEST = 7;
+    public const PAGE_WORDS = 8;
 
 
     /**
@@ -52,4 +53,9 @@ class Config extends Component
     public const CHAT_TYPE_GROUP = 'group';
     public const CHAT_TYPE_PRIVATE = 'private';
     public const CHAT_TYPE_CHANNEL = 'channel';
+
+    /**
+     * Keyboards
+     */
+    public const BACK = '🔙Orqaga';
 }

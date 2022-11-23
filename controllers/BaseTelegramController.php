@@ -13,7 +13,7 @@ use Yii;
 class BaseTelegramController extends Controller
 {
     public Telegram $telegram;
-    public array|bool $user;
+    public array |bool $user;
 
     /**
      * @param $id
@@ -28,6 +28,7 @@ class BaseTelegramController extends Controller
 
         $this->telegram = new Telegram();
         $this->user = Users::getUser($this->telegram->chat_id);
+        Yii::$app->params['user'] = $this->user;
 
         if ($this->confirmUser() === false) {
             exit('Sizning sahifangiz nofaol');

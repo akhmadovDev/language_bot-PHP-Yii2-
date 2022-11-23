@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use app\components\Config;
+use app\components\Keyboard;
 use Yii;
 
 /**
@@ -71,5 +73,55 @@ class SubCategory extends \yii\db\ActiveRecord
     public function getWords()
     {
         return $this->hasMany(Words::class, ['sub_category_id' => 'id']);
+    }
+
+    /**
+     * Subkategoriyani qaytraradi
+     *
+     * @param string $category_id
+     * @return void
+     */
+    public static function getAll(string $category_id)
+    {
+        $sql = <<<SQL
+            SELECT * FROM sub_category WHERE category_id = :category_id AND status = :status
+        SQL;
+
+        $sub_catigories =  Yii::$app
+            ->db
+            ->createCommand($sql, [
+                ':category_id' => $category_id,
+                ':status' => Config::STATUS_ACTIVE
+            ])->queryAll();
+
+        if (empty($sub_catigories)) {
+            return null;
+        }
+
+        return Keyboard::keyboard($sub_catigories);
+    }
+
+     /**
+     * Undocumented function
+     *
+     * @param string $sub_category_name
+     * @return integer|null
+     */
+    public static function getId(string $sub_category_name): ?int
+    {
+        $sql = <<<SQL
+            SELECT * FROM sub_category WHERE status = :status AND name = :name 
+        SQL;
+
+        $sub_category =  Yii::$app->db->createCommand($sql, [
+            ':status' => Config::STATUS_ACTIVE,
+            ':name' => $sub_category_name
+        ])->queryOne();
+
+        if ($sub_category === false) {
+            return null;
+        }
+
+        return $sub_category['id'];
     }
 }
