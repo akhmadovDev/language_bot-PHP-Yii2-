@@ -6,11 +6,12 @@ use app\components\Config;
 use app\components\Keyboard;
 use app\components\Telegram;
 use app\models\SubCategory;
-use app\models\Category;
+use app\models\Category as CategoryModel;
 use app\models\Users;
 use app\models\Words;
 use Telegram\Bot\Objects\Message as MessageObject;
 use app\controllers\pages\Home;
+use app\controllers\pages\Category;
 use Yii;
 use Exception;
 
@@ -44,48 +45,13 @@ class UsersController extends \yii\web\Controller
                 $home = new Home();
                 return $home->run();
             case Config::PAGE_CATEGORY:
-                return self::pageCategory($telegram, $user);
+                $category = new Category();
+                return $category->run();
             case Config::PAGE_SUB_CATEGORY:
                 return self::pageSubCategory($telegram, $user);
             case Config::PAGE_WORDS:
                 return self::pageWords($telegram, $user);
         }
-    }
-
-    /**
-     * Category page
-     *
-     * @param Telegram $telegram
-     * @param array $user
-     * @return void
-     */
-    public static function pageCategory(Telegram $telegram, array $user)
-    {
-        if ($telegram->text == Config::BACK) {
-            $text = Yii::t('app/telegram', 'Welcome');
-            $home = new Home();
-            return $home->run([
-                'text' => $text
-            ]);
-        }
-
-        $category_id = Category::getId($telegram->text);
-
-        if ($category_id == false) {
-            return $telegram->send('Kategoriya mavjud emas iltimos tugmalardan birini tanlang');
-            exit;
-        }
-
-        // Sub Category page
-        $sub_category = SubCategory::getAll($category_id);
-
-        if ($sub_category === null) {
-            return $telegram->send('Ushbu kategoriyaga tegishli ma`lumot mavjud emas');
-        }
-
-        // Sub kategoriyalarni qaytaradi
-        Users::updatePage(Config::PAGE_SUB_CATEGORY, $user['id']);
-        return $telegram->send('Sub kategoriyalardan birini tanlang', $sub_category);
     }
 
     /**

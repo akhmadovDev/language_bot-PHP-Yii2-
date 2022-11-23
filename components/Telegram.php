@@ -84,4 +84,14 @@ class Telegram extends Api
 
         return true;
     }
+
+    /**
+     * back command
+     *
+     * @return boolean
+     */
+    protected function backCommand(): bool
+    {
+        return $this->text === Config::BACK;
+    }
 }

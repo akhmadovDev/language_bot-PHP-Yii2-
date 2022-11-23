@@ -89,9 +89,9 @@ class Category extends \yii\db\ActiveRecord
      * agar kategoriya id si bo'lmada false qasytaradi
      *
      * @param string $category_name
-     * @return int|bool
+     * @return int|null
      */
-    public static function getId(string $category_name): int|bool
+    public static function getId(string $category_name): ?int
     {
         $sql = <<<SQL
             SELECT `id` FROM category WHERE name = :name
@@ -100,7 +100,7 @@ class Category extends \yii\db\ActiveRecord
         $result = Yii::$app->db->createCommand($sql, [':name' => $category_name])->queryOne();
 
         if ($result === false) {
-            return false;
+            return null;
         }
 
         return $result['id'];

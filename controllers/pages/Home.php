@@ -76,9 +76,10 @@ class Home extends Telegram
     */
    public function goToNextPage(): bool
    {
+      $categories = $this->getCategories();
+      $keyboards = $this->categoriesKeyboard($categories);
+
       if ($this->updatePage(Config::PAGE_CATEGORY)) {
-         $categories = $this->getCategories();
-         $keyboards = $this->categoriesKeyboard($categories);
          $this->send(Yii::t('app/telegram', 'Kategoriya tanlang'), $keyboards);
 
          return true;
