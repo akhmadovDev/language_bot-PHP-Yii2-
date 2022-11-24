@@ -14,6 +14,7 @@ class Telegram extends Api
 {
     public UpdateObject $update;
     public int $chat_id;
+    public int $message_id;
     public string $chat_type;
     public string $text;
     public Config $config;
@@ -28,6 +29,7 @@ class Telegram extends Api
         $this->chat_id = $this->update->getChat()->id;
         $this->chat_type = $this->update->getChat()->type;
         $this->text = $this->update->getMessage()->text;
+        $this->message_id = $this->update->getMessage()->messageId;
 
         $this->checkChatType($this->chat_type) === false ? exit('kirish xuquqi mavjud emas') : '';
     }
@@ -43,6 +45,18 @@ class Telegram extends Api
     {
         return $this->sendMessage([
             'chat_id' => $this->chat_id,
+            'text' => $text,
+            'reply_markup' => $keyboard,
+            'parse_mode' => 'HTML'
+        ]);
+    }
+
+
+    public function update(string $text, ? Keyboard $keyboard = null)
+    {
+        return $this->editMessageText([
+            'chat_id' => $this->chat_id,
+            'message_id' => (int) $this->message_id - 1,
             'text' => $text,
             'reply_markup' => $keyboard,
             'parse_mode' => 'HTML'
@@ -77,6 +91,23 @@ class Telegram extends Api
     {
         $user_id = Yii::$app->params['user']['id'];
         $update_page = Users::updatePage($page, $user_id);
+
+        if ($update_page < 1) {
+            throw new Exception('Qandaydir xatolik sodir bo`ldi. User sahifasi o`zgartirilmadi. Iltimos @mr_Akhmadov ga murojaat qiling');
+        }
+
+        return true;
+    }
+
+    /**
+     * Update user sub category id
+     *
+     * @return bool
+     */
+    protected function updateUser(array $columns): bool
+    {
+        $user_id = Yii::$app->params['user']['id'];
+        $update_page = Users::updateUser($columns, $user_id);
 
         if ($update_page < 1) {
             throw new Exception('Qandaydir xatolik sodir bo`ldi. User sahifasi o`zgartirilmadi. Iltimos @mr_Akhmadov ga murojaat qiling');

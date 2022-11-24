@@ -68,4 +68,35 @@ class Keyboard extends BaseKeyboard
 
         return $keyboard->setResizeKeyboard(true)->setOneTimeKeyboard(false);
     }
+
+    /**
+     * Select menu keyboard
+     *
+     * @return Keyboard
+     */
+    public static function selectMenu()
+    {
+        $keyboard = Keyboard::make();
+        $keyboard->row(
+            Keyboard::button(['text' => Config::ALL_WORDS]),
+            Keyboard::button(['text' => Config::START_TEST]),
+        );
+
+        return $keyboard->setResizeKeyboard(true)->setOneTimeKeyboard(false);
+    }
+
+    /**
+     * Pagination button
+     *
+     * @return Keyboard
+     */
+    public static function paginationButton()
+    {
+        return Keyboard::make()
+            ->inline()
+            ->row(
+                Keyboard::inlineButton(['text' => 'Before', 'callback_data' => 'data']),
+                Keyboard::inlineButton(['text' => 'Next', 'callback_data' => 'data_from_btn2'])
+            );
+    }
 }

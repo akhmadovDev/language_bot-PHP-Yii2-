@@ -28,6 +28,7 @@ class Config extends Component
     public const PAGE_SUB_CATEGORY = 6;
     public const PAGE_TEST = 7;
     public const PAGE_WORDS = 8;
+    public const PAGE_SELECT_MENU = 9;
 
 
     /**
@@ -58,4 +59,6 @@ class Config extends Component
      * Keyboards
      */
     public const BACK = '🔙Orqaga';
+    public const ALL_WORDS = 'All Words';
+    public const START_TEST = 'Start Test';
 }

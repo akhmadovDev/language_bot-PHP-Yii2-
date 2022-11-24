@@ -3,19 +3,18 @@
 namespace app\controllers;
 
 use app\components\Config;
-use app\components\Keyboard;
 use app\components\Telegram;
-use app\models\SubCategory;
-use app\models\Category as CategoryModel;
+use app\controllers\pages\SubCategory;
+use app\controllers\pages\SelectMenu;
+use app\models\SubCategory as SubCategoryModel;
 use app\models\Users;
 use app\models\Words;
-use Telegram\Bot\Objects\Message as MessageObject;
 use app\controllers\pages\Home;
 use app\controllers\pages\Category;
+use yii\web\Controller;
 use Yii;
-use Exception;
 
-class UsersController extends \yii\web\Controller
+class UsersController extends Controller
 {
     public function actionIndex()
     {
@@ -48,7 +47,11 @@ class UsersController extends \yii\web\Controller
                 $category = new Category();
                 return $category->run();
             case Config::PAGE_SUB_CATEGORY:
-                return self::pageSubCategory($telegram, $user);
+                $sub_category = new SubCategory();
+                return $sub_category->run();
+            case Config::PAGE_SELECT_MENU:
+                $select_menu = new SelectMenu();
+                return $select_menu->run();
             case Config::PAGE_WORDS:
                 return self::pageWords($telegram, $user);
         }
@@ -64,12 +67,12 @@ class UsersController extends \yii\web\Controller
      */
     public static function pageSubCategory(Telegram $telegram, array $user)
     {
-        if ($telegram->text === Config::BACK) {
-            $telegram->text = 'Boshlash';
-            return self::pageHome($telegram, $user);
-        }
+        // if ($telegram->text === Config::BACK) {
+        //     $telegram->text = 'Boshlash';
+        //     return self::pageHome($telegram, $user);
+        // }
 
-        $sub_category_id = SubCategory::getId($telegram->text);
+        $sub_category_id = SubCategoryModel::getId($telegram->text);
 
         if ($sub_category_id === null) {
             return $telegram->send('Iltimos unit tanlash uchun tugmalardan birini tanlang!');
@@ -111,12 +114,5 @@ class UsersController extends \yii\web\Controller
             )->execute();
 
         return $result > 0;
-    }
-
-    public static function pageWords(Telegram $telegram, array $user)
-    {
-        if ($telegram->text === Config::BACK) {
-            return self::pageHome($telegram, $user);
-        }
     }
 }

@@ -63,7 +63,7 @@ class Users extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Tests]].
      *
-     * @return \yii\db\ActiveQuery|TestQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getTests()
     {
@@ -103,5 +103,25 @@ class Users extends \yii\db\ActiveRecord
             ':page' => $page_id,
             ':user_id' => $user_id
         ])->execute();
+    }
+
+    /**
+     * update user
+     * ```
+     *     $columns = [
+     *         'page' => 1,
+     *         'sub_category_id' => 2
+     *     ]
+     * ```
+     *
+     * @param array $colums
+     * @param integer $user_id
+     * @return integer
+     */
+    public static function updateUser(array $colums, int $user_id): int
+    {
+        return Yii::$app->db->createCommand()
+            ->update('users', $colums, 'id = :user_id', [':user_id' => $user_id])
+            ->execute();
     }
 }

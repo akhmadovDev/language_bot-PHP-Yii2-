@@ -76,7 +76,7 @@ class Category extends Telegram
     {
         $category_id = CategoryModel::getId($this->text);
 
-        if ($category_id == false) {
+        if ($category_id == null) {
             throw new Exception('Xato buyruq kiritildi. Iltimos tugmalardan birini tanlang');
         }
 
